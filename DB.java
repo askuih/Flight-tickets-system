@@ -108,7 +108,7 @@ public class DB {
     }
 
     protected void createFlight() {
-        // TODO: Fix dates
+        // TODO: Add hours and minutes
         Scanner scanner = new Scanner(System.in);
         String query;
 
@@ -116,6 +116,8 @@ public class DB {
         try {
             System.out.println("Enter id of a city to depart from: ");
             int departureCityId = scanner.nextInt();
+            System.out.println("Enter date and time of departure (yyyy-MM-dd): ");
+            Date departureDateTime = Date.valueOf(scanner.next());
 //            System.out.println("Enter date of departure (yyyy-mm-dd): ");
 //            System.out.println("Enter year of departure: ");
 //            int departureYear = scanner.nextInt();
@@ -123,12 +125,10 @@ public class DB {
 //            int departureMonth = scanner.nextInt();
 //            System.out.println("Enter day of departure: ");
 //            int departureDay = scanner.nextInt();
-//            LocalDate departureDateTime = LocalDate.of(departureYear, departureMonth, departureDay);
-//            Date date = Date.valueOf(departureDateTime);
-            System.out.println("Enter date and time of departure (yyyy-MM-dd): ");
-            Date departureDateTime = Date.valueOf(scanner.next());
             System.out.println("Enter id of a city to arrive to: ");
             int arrivalCityId = scanner.nextInt();
+            System.out.println("Enter date and time of departure (yyyy-MM-dd): ");
+            Date arrivalDateTime = Date.valueOf(scanner.next());
 //            System.out.println("Enter year of arrival: ");
 //            int arrivalYear = scanner.nextInt();
 //            System.out.println("Enter month of departure: ");
@@ -136,16 +136,9 @@ public class DB {
 //            System.out.println("Enter day of departure: ");
 //            int arrivalDay = scanner.nextInt();
 //            LocalDateTime arrivalDateTime = LocalDateTime.of(arrivalYear, arrivalMonth, arrivalDay, 0, 0);
-            System.out.println("Enter date and time of departure (yyyy-MM-dd): ");
-            Date arrivalDateTime = Date.valueOf(scanner.next());
             query = """
                     INSERT INTO tb_flights (id, departure_city_id, departure_time, arrival_city_id, arrival_time)
                     VALUES ((SELECT COALESCE(MAX(id) + 1, 1) FROM tb_flights), ?, ?, ?, ?)""";
-//            query = """
-//                    INSERT INTO tb_flights
-//                      (id, departure_city_id, arrival_city_id)
-//                    VALUES
-//                      ((SELECT COALESCE(MAX(id) + 1, 1) FROM tb_flights), ?, ?)""";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, departureCityId);
             preparedStatement.setDate(2, departureDateTime);
@@ -174,10 +167,10 @@ public class DB {
             resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
                 System.out.println("Flight #" + resultSet.getInt("id") +
-                        " from " + resultSet.getString("departure_city") +
-                        " at " + resultSet.getDate("departure_time") + " " + resultSet.getTime("departure_time") +
-                        " to " + resultSet.getString("arrival_city") +
-                        " at " + resultSet.getDate("arrival_time") + " " + resultSet.getTime("arrival_time"));
+                                " from " + resultSet.getString("departure_city") +
+                                " at " + resultSet.getDate("departure_time") + " " + resultSet.getTime("departure_time") +
+                                " to " + resultSet.getString("arrival_city") +
+                                " at " + resultSet.getDate("arrival_time") + " " + resultSet.getTime("arrival_time"));
             }
             System.out.println();
         } catch (SQLException e) {
