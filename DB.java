@@ -116,26 +116,12 @@ public class DB {
         try {
             System.out.println("Enter id of a city to depart from: ");
             int departureCityId = scanner.nextInt();
-            System.out.println("Enter date and time of departure (yyyy-MM-dd): ");
+            System.out.println("Enter date of departure (yyyy-MM-dd): ");
             Date departureDateTime = Date.valueOf(scanner.next());
-//            System.out.println("Enter date of departure (yyyy-mm-dd): ");
-//            System.out.println("Enter year of departure: ");
-//            int departureYear = scanner.nextInt();
-//            System.out.println("Enter month of departure: ");
-//            int departureMonth = scanner.nextInt();
-//            System.out.println("Enter day of departure: ");
-//            int departureDay = scanner.nextInt();
             System.out.println("Enter id of a city to arrive to: ");
             int arrivalCityId = scanner.nextInt();
-            System.out.println("Enter date and time of departure (yyyy-MM-dd): ");
+            System.out.println("Enter date of arrival (yyyy-MM-dd): ");
             Date arrivalDateTime = Date.valueOf(scanner.next());
-//            System.out.println("Enter year of arrival: ");
-//            int arrivalYear = scanner.nextInt();
-//            System.out.println("Enter month of departure: ");
-//            int arrivalMonth = scanner.nextInt();
-//            System.out.println("Enter day of departure: ");
-//            int arrivalDay = scanner.nextInt();
-//            LocalDateTime arrivalDateTime = LocalDateTime.of(arrivalYear, arrivalMonth, arrivalDay, 0, 0);
             query = """
                     INSERT INTO tb_flights (id, departure_city_id, departure_time, arrival_city_id, arrival_time)
                     VALUES ((SELECT COALESCE(MAX(id) + 1, 1) FROM tb_flights), ?, ?, ?, ?)""";
